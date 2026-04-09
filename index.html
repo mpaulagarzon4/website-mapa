@@ -111,7 +111,8 @@
       color: var(--muted);
       position: absolute;
       left: 50%;
-      transform: translateX(-50%);
+      top: 50%;
+      transform: translate(-50%, -50%);
       white-space: nowrap;
       pointer-events: none;
     }
@@ -131,13 +132,12 @@
       color: var(--ink);
       text-decoration: none;
       position: relative;
-      padding-bottom: 3px;
       transition: color 0.2s;
     }
     .topnav-links a::after {
       content: '';
       position: absolute;
-      bottom: 0; left: 0;
+      bottom: -3px; left: 0;
       width: 0; height: 1px;
       background: var(--accent);
       transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1);
@@ -146,6 +146,76 @@
     .topnav-links a:hover::after { width: 100%; }
     .topnav-links a.nav-active { color: var(--accent); }
     .topnav-links a.nav-active::after { width: 100%; }
+
+    /* === HAMBURGER BUTTON === */
+    .topnav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      flex-shrink: 0;
+      z-index: 101;
+    }
+    .topnav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--ink);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 0.2s ease;
+      transform-origin: center;
+    }
+    .topnav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .topnav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .topnav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* === MOBILE MENU OVERLAY === */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 52px; left: 0; right: 0;
+      background: rgba(246,243,238,0.97);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      z-index: 99;
+      flex-direction: column;
+      padding: 8px 0 16px;
+      transform: translateY(-8px);
+      opacity: 0;
+      transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mobile-menu.open {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .mobile-menu-link {
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      font-weight: 500;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--line);
+      transition: color 0.2s;
+    }
+    .mobile-menu-link:last-child { border-bottom: none; }
+    .mobile-menu-link:hover { color: var(--accent); }
+
+    @media (max-width: 640px) {
+      .topnav-descriptor { display: none; }
+      .topnav-links { display: none !important; }
+      .topnav-hamburger { display: flex; }
+      .mobile-menu { display: flex; }
+    }
 
     /* === HERO === */
     .hero {
@@ -779,9 +849,9 @@
     /* === RESPONSIVE === */
     @media (max-width: 1024px) {
       .topnav-descriptor { display: none; }
-      .hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero-statement { padding: 52px 40px 48px; min-height: 70vw; }
-      .hero-photo-col { height: 62vw; }
+      .hero { grid-template-columns: 1fr; min-height: auto; overflow: hidden; }
+      .hero-statement { padding: 52px 40px 48px; min-height: 42vw; }
+      .hero-photo-col { height: 52vw; }
       .bio { grid-template-columns: 1fr; }
       .bio-photo { height: 62vw; }
       .bio-body { padding: 64px 40px; }
@@ -791,16 +861,16 @@
       .working-grid { grid-template-columns: 1fr 1fr; }
       .edu-grid { grid-template-columns: 1fr; gap: 32px; }
       .earlier-grid { grid-template-columns: 1fr 1fr; }
-      .metrics { gap: 40px; padding: 44px 40px; }
+      .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 32px; padding: 44px 40px; }
       .section { padding: 56px 40px; }
       .footer { padding: 22px 40px; }
     }
 
     @media (max-width: 640px) {
       .topnav { padding: 0 20px; }
-      .topnav-links { gap: 16px; }
-      .hero-statement { padding: 44px 24px 40px; min-height: 90vw; }
-      .hero-photo-col { height: 80vw; }
+      .hero { max-height: 60vh; }
+      .hero-statement { padding: 28px 24px 24px; min-height: unset; }
+      .hero-photo-col { height: 40vw; }
       .working-grid { grid-template-columns: 1fr; }
       .bio-facts { grid-template-columns: 1fr; }
       .bio-body { padding: 52px 24px; }
@@ -808,7 +878,10 @@
       .skills-row { gap: 32px; }
       .section { padding: 44px 24px; }
       .contact-body { padding: 60px 24px; }
-      .metrics { gap: 28px; padding: 40px 24px; }
+      .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 28px 12px; padding: 36px 20px; }
+      .metric-tag { font-size: 0.66rem; letter-spacing: 0.1em; }
+      .metric-label, .metric-sub { font-size: 0.7rem; letter-spacing: 0.04em; }
+      .metric-num { font-size: clamp(28px, 8vw, 44px); }
       .footer { padding: 20px 24px; flex-direction: column; gap: 6px; text-align: center; }
     }
     /* === WORLD MAP === */
@@ -929,12 +1002,21 @@
   <header class="topnav" role="banner">
     <a href="#top" class="topnav-name">Creating impactful products</a>
     <span class="topnav-descriptor">(Product Manager &amp; Builder.)</span>
-    <nav class="topnav-links" aria-label="Page navigation">
+    <nav class="topnav-links" id="topnav-links" aria-label="Page navigation">
       <a href="#way-of-working">Way of Working</a>
       <a href="#cv">CV</a>
       <a href="#contact">Contact</a>
     </nav>
+    <button class="topnav-hamburger" id="topnav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </header>
+  <!-- Mobile menu overlay -->
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <a href="#way-of-working" class="mobile-menu-link">Way of Working</a>
+    <a href="#cv" class="mobile-menu-link">CV</a>
+    <a href="#contact" class="mobile-menu-link">Contact</a>
+  </div>
 
   <!-- ── HERO ── -->
   <section class="hero" id="top">
@@ -946,7 +1028,7 @@
     </div>
     <div class="hero-photo-col reveal d1">
       <img src="brand_assets/_DSF3420.JPG" alt="Maria Garzon in Mexico City" loading="eager">
-      <span class="hero-scroll-label">Scroll.</span>
+      <span class="hero-scroll-label">Mexico City — 2025</span>
     </div>
   </section>
 
@@ -1332,6 +1414,24 @@
       el.addEventListener('click', () => {
         const target = document.querySelector(el.dataset.href);
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // ── Hamburger menu ──
+    const hamburger = document.getElementById('topnav-hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    hamburger.addEventListener('click', () => {
+      const isOpen = hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open', isOpen);
+      hamburger.setAttribute('aria-expanded', isOpen);
+      mobileMenu.setAttribute('aria-hidden', !isOpen);
+    });
+    document.querySelectorAll('.mobile-menu-link').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
       });
     });
 
