@@ -1,0 +1,22 @@
+node_modules/
+temporary screenshots/
+package-lock.json
+package.json
+screenshot.mjs
+serve.mjs
+CLAUDE.md
+
+# Reference/scratch images in project root
+Captura de pantalla*.png
+www.*.png
+
+# Claude Code dev files
+.claude/
+.clj-kondo/
+.lsp/
+
+# Large media files
+*.MOV
+*.mov
+
+.DS_Store
