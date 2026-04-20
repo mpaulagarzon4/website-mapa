@@ -1527,5 +1527,11 @@
     // call after current call stack clears so DOM is fully ready
     setTimeout(() => initMap().catch(e => console.error('initMap:', e)), 0);
   </script>
+
+  <!-- Vercel Speed Insights -->
+  <script>
+    window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>
